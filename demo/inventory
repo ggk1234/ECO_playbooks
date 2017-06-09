@@ -1,0 +1,14 @@
+[webservers]
+#13.113.176.150
+35.157.92.86
+
+[dbservers]
+52.197.179.62
+
+[datacenter:children]
+webservers
+dbservers
+
+[datacenter:vars]
+ansible_ssh_user=ubuntu
+ansible_ssh_private_key_file=/home/ubuntu/eco_key.pem

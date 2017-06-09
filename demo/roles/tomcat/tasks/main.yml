@@ -1,0 +1,11 @@
+---
+ - name: install tomcat
+   apt: name=tomcat7 update_cache=yes cache_valid_time=3600 state=present
+   notify: restart tomcat7
+ 
+ - name: deploying java application
+   copy:
+     src=/root/.jenkins/workspace/Java_Demo/SpringMVCSecurityXML/target/SpringMVCSecurityXML.war
+     dest=/var/lib/tomcat7/webapps/
+
+

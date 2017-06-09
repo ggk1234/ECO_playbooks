@@ -1,0 +1,12 @@
+---
+- hosts: webservers
+  become: yes
+  gather_facts: yes
+  roles:
+  - tomcat
+
+#- hosts: dbservers
+#  become: yes
+#  gather_facts: yes
+#  roles:
+#  - dbserver

@@ -1,0 +1,51 @@
+---
+- name: Install MySQL
+  apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+  sudo: yes
+  with_items:
+  - python-mysqldb
+  - mysql-server
+#- name: copy cnf
+#  copy: src=.my.cnf dest=~/.my.cnf owner=ubuntu mode=0644
+#  sudo: yes
+- name: Start the MySQL service
+  sudo: yes
+  service: 
+    name: mysql 
+    state: started
+    enabled: true
+    
+- name: update mysql root password for all root accounts
+  sudo: yes
+  mysql_user: 
+    name: root 
+    host: 13.113.176.150 
+    password: "{{ DBPassword }}"
+    login_user: root
+    login_password: "{{ DBPassword }}"
+    check_implicit_admin: yes
+    priv: "*.*:ALL,GRANT"
+
+
+- name: Copying Database script
+  copy:
+    src:  /root/.jenkins/workspace/Java_Demo/db-script.sql
+    dest: /home/ubuntu
+
+#- name: Creating Simplehr database
+#  command: mysql -u root -p{{DBPassword}} -e "CREATE DATABASE IF NOT EXISTS simplehr;"
+#  become: yes
+#  become_user: ubuntu
+
+- mysql_db: name=simplehr state=present login_password= "{{ DBPassword }}"
+
+#- name: Executing the Database script
+#  command: mysql -u root -p{{DBPassword}} < /user/ubuntu/db-script.sql
+
+- mysql_db: state=import name=all target=/home/ubuntu/db-script.sql login_password= "{{ DBPassword }}"
+
+
+
+
+
+
